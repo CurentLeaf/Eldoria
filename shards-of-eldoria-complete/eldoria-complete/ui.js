@@ -21,7 +21,6 @@ GameUI.prototype.renderHeader = function() {
 };
 
 GameUI.prototype.displayStoryNode = function(node) {
-    if (node.text === "SHOW_MAIN_INTERFACE") { this.game.previousScreen = "main"; this.showMainInterface(); return; }
     var choicesHtml = "";
     if (node.choices && node.choices.length > 0) {
         choicesHtml = '<div class="choices">';
@@ -74,7 +73,6 @@ GameUI.prototype.showCombatDefeat = function(r) {
 GameUI.prototype.showGameOver = function(r) { this.setContent('<div class="game-over"><h1>☠️ GAME OVER ☠️</h1><p class="death-message">' + (r.deathMessage || "Your journey ends.") + '</p><button class="btn btn-primary" onclick="game.ui.showTitleScreen()">Return to Title</button></div>'); };
 
 GameUI.prototype.showMainInterface = function() {
-    this.game.previousScreen = "main";
     var loc = LOCATIONS.millbrook;
     this.setContent('<div class="main-interface">' + this.renderHeader() + '<div class="main-content"><div class="action-panel"><h3>📍 ' + loc.name + '</h3><p>' + loc.description + '</p><div class="action-buttons"><button class="btn btn-action" onclick="game.explore(\'dark_forest\')">🌲 Explore Dark Forest</button><button class="btn btn-action" onclick="game.openFishing(\'millbrook_pond\')">🎣 Go Fishing</button><button class="btn btn-action" onclick="game.openGambling(\'millbrook_tavern\')">🎲 Visit Tavern (Gambling)</button><button class="btn btn-action" onclick="game.openShop(\'millbrook\')">🛒 General Store</button><button class="btn btn-action" onclick="game.showQuests()">📜 Quest Log</button><button class="btn btn-action" onclick="game.showInventory()">🎒 Inventory</button><button class="btn btn-action" onclick="game.showCharacter()">👤 Character</button><button class="btn btn-action" onclick="game.rest()">🏕️ Rest & Heal</button></div></div></div></div>');
 };

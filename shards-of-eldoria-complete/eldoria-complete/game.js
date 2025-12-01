@@ -10,7 +10,7 @@ function Game() {
     this.pendingChoice = null;
     this.currentGamblingGame = null;
     this.currentGamblingLocation = null;
-    this.previousScreen = "story"; // Track where we came from
+    this.inStoryMode = true; // TRUE = in story, FALSE = free roam village
 }
 
 Game.prototype.init = function() {
@@ -30,7 +30,7 @@ Game.prototype.newGame = function(name, characterClass, difficulty) {
     }
     this.quests.startQuest("main_awakening");
     this.currentNode = "opening";
-    this.previousScreen = "story";
+    this.inStoryMode = true;
     this.displayCurrentNode();
     this.saveGame();
 };
@@ -39,7 +39,15 @@ Game.prototype.displayCurrentNode = function() {
     var node = STORY[this.currentNode];
     if (!node) { console.error("Node not found:", this.currentNode); return; }
     this.processNodeEffects(node.effects);
-    this.previousScreen = "story";
+
+    // Check if this node transitions to free roam
+    if (node.text === "SHOW_MAIN_INTERFACE") {
+        this.inStoryMode = false;
+        this.ui.showMainInterface();
+        return;
+    }
+
+    this.inStoryMode = true;
     this.ui.displayStoryNode(node);
 };
 
@@ -319,11 +327,18 @@ Game.prototype.rest = function() {
     this.saveGame();
 };
 
-// NEW: Go back to previous screen (story or main interface)
+// Go back to wherever we should be
 Game.prototype.goBack = function() {
-    if (this.previousScreen === "story" && this.currentNode && this.currentNode !== "free_roam") {
-        this.displayCurrentNode();
+    if (this.inStoryMode) {
+        // We're in story mode - redisplay current story node
+        var node = STORY[this.currentNode];
+        if (node && node.text !== "SHOW_MAIN_INTERFACE") {
+            this.ui.displayStoryNode(node);
+        } else {
+            this.ui.showMainInterface();
+        }
     } else {
+        // We're in free roam mode - show village
         this.ui.showMainInterface();
     }
 };
@@ -333,7 +348,7 @@ Game.prototype.saveGame = function() {
         var saveData = {
             character: this.character,
             currentNode: this.currentNode,
-            previousScreen: this.previousScreen,
+            inStoryMode: this.inStoryMode,
             quests: { activeQuests: this.quests.activeQuests, completedQuests: this.quests.completedQuests },
             fishing: { fishCaught: this.fishing.fishCaught, totalCatches: this.fishing.totalCatches, equipped: this.fishing.equipped },
             gambling: { gamesPlayed: this.gambling.gamesPlayed, totalWon: this.gambling.totalWon, totalLost: this.gambling.totalLost }
@@ -351,7 +366,7 @@ Game.prototype.loadGame = function() {
             this.character = new Character(saveData.character.name, saveData.character.characterClass, saveData.character.difficulty);
             Object.assign(this.character, saveData.character);
             this.currentNode = saveData.currentNode;
-            this.previousScreen = saveData.previousScreen || "story";
+            this.inStoryMode = saveData.inStoryMode !== false; // Default to true if not set
             if (saveData.quests) {
                 this.quests.activeQuests = saveData.quests.activeQuests || {};
                 this.quests.completedQuests = saveData.quests.completedQuests || [];
@@ -378,7 +393,13 @@ Game.prototype.loadGame = function() {
 };
 
 Game.prototype.continueGame = function() {
-    if (this.character) this.displayCurrentNode();
+    if (this.character) {
+        if (this.inStoryMode) {
+            this.displayCurrentNode();
+        } else {
+            this.ui.showMainInterface();
+        }
+    }
 };
 
 var game;
