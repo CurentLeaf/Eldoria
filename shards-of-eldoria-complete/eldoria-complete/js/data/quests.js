@@ -1,0 +1,47 @@
+var QUESTS = {
+    // Main story
+    main_awakening: { id: "main_awakening", title: "Awakening", type: "main", description: "You have awoken with no memory. Find answers.",
+        objectives: [{ id: "wake_up", text: "Regain consciousness", count: 0, target: 1 }], rewards: { xp: 20 }, nextQuest: "main_village_flames" },
+    main_village_flames: { id: "main_village_flames", title: "Village in Flames", type: "main", description: "Millbrook burns. Goblins attack.",
+        objectives: [{ id: "reach_village", text: "Reach the burning village", count: 0, target: 1 }, { id: "speak_elder", text: "Speak with Elder Mira", count: 0, target: 1 }],
+        rewards: { xp: 50, gold: 25 }, nextQuest: "main_chieftain" },
+    main_chieftain: { id: "main_chieftain", title: "The Goblin Chieftain", type: "main", description: "Grimjaw leads the horde. He carries a Shard.",
+        objectives: [{ id: "find_lair", text: "Find the goblin lair", count: 0, target: 1 }, { id: "defeat_grimjaw", text: "Defeat Grimjaw", count: 0, target: 1 }],
+        rewards: { xp: 200, gold: 100, karma: 10 }, nextQuest: "main_second_shard" },
+    main_second_shard: { id: "main_second_shard", title: "The Second Shard", type: "main", description: "Two Shards collected. Elder Mira speaks of Ashenmoor.",
+        objectives: [{ id: "reach_ashenmoor", text: "Travel to Ashenmoor", count: 0, target: 1 }, { id: "investigate_plague", text: "Investigate the shadow plague", count: 0, target: 1 }],
+        rewards: { xp: 300, gold: 150 }, nextQuest: "main_hollow_knight" },
+    main_hollow_knight: { id: "main_hollow_knight", title: "The Hollow Knight", type: "main", description: "The source is an ancient knight, corrupted by a Shard.",
+        objectives: [{ id: "enter_ruins", text: "Enter the Sunken Ruins", count: 0, target: 1 }, { id: "defeat_hollow", text: "Defeat the Hollow Knight", count: 0, target: 1 }],
+        rewards: { xp: 500, gold: 300 }, nextQuest: "main_cult_conspiracy" },
+    main_cult_conspiracy: { id: "main_cult_conspiracy", title: "The Cult's Design", type: "main", description: "The Cult has the remaining Shards. Their ritual begins.",
+        objectives: [{ id: "find_cult", text: "Locate the stronghold", count: 0, target: 1 }, { id: "stop_ritual", text: "Stop the ritual", count: 0, target: 1 }, { id: "defeat_priest", text: "Defeat the High Priest", count: 0, target: 1 }],
+        rewards: { xp: 800, gold: 500 }, nextQuest: "main_final_battle" },
+    main_final_battle: { id: "main_final_battle", title: "The Shattered God", type: "main", description: "The ritual was completed. The God awakens. This is the end.",
+        objectives: [{ id: "confront_god", text: "Confront the Shattered God", count: 0, target: 1 }, { id: "make_choice", text: "Make your final choice", count: 0, target: 1 }], rewards: { ending: true } },
+
+    // Side quests
+    side_wolf_problem: { id: "side_wolf_problem", title: "Wolf Problem", type: "side", description: "Wolves have grown bold. Thin their numbers.",
+        objectives: [{ id: "kill_wolves", text: "Kill forest wolves", count: 0, target: 5 }], rewards: { xp: 40, gold: 30, karma: 5 } },
+    side_herb_gathering: { id: "side_herb_gathering", title: "Healing Herbs", type: "side", description: "The healer needs herbs from the Dark Forest.",
+        objectives: [{ id: "gather_herbs", text: "Gather healing herbs", count: 0, target: 3 }], rewards: { xp: 30, gold: 20, items: ["health_potion", "health_potion"] } },
+    side_lost_heirloom: { id: "side_lost_heirloom", title: "Lost Heirloom", type: "side", description: "A family sword was stolen by goblins.",
+        objectives: [{ id: "find_sword", text: "Recover the family sword", count: 0, target: 1 }], rewards: { xp: 60, gold: 50, karma: 10 } },
+    side_fishing_master: { id: "side_fishing_master", title: "The Master Angler", type: "side", description: "Old Pete challenges you to catch rare fish.",
+        objectives: [{ id: "catch_golden_carp", text: "Catch a Golden Carp", count: 0, target: 1 }, { id: "catch_shadow_trout", text: "Catch a Shadow Trout", count: 0, target: 1 }],
+        rewards: { xp: 100, items: ["master_rod"] } },
+    side_legendary_catch: { id: "side_legendary_catch", title: "The Legend of the Lurker", type: "side", description: "A massive beast in the Dark River. No one has caught it.",
+        objectives: [{ id: "catch_lurker", text: "Catch The Lurker", count: 0, target: 1 }], rewards: { xp: 300, gold: 200, title: "Monster Angler" } },
+    side_gambling_debt: { id: "side_gambling_debt", title: "A Debt Unpaid", type: "side", description: "A man owes Sly Silva a dangerous amount.",
+        objectives: [{ id: "talk_to_debtor", text: "Find the debtor", count: 0, target: 1 }, { id: "resolve_debt", text: "Resolve the situation", count: 0, target: 1 }], rewards: { xp: 80 } },
+    side_cursed_blade: { id: "side_cursed_blade", title: "The Blade Whispers", type: "side", description: "You found a cursed weapon. Its whispers promise power.",
+        objectives: [{ id: "research_curse", text: "Learn about the curse", count: 0, target: 1 }, { id: "choose_fate", text: "Purify or embrace", count: 0, target: 1 }], rewards: { xp: 150 } },
+
+    // Companion quests
+    lyra_past: { id: "lyra_past", title: "Blood on Her Hands", type: "companion", companion: "lyra", description: "Lyra's past catches up with her.",
+        objectives: [{ id: "learn_past", text: "Learn Lyra's history", count: 0, target: 1 }, { id: "confront_past", text: "Confront her past", count: 0, target: 1 }],
+        rewards: { xp: 200, companionApproval: 30 } },
+    borin_vengeance: { id: "borin_vengeance", title: "The Forge's Fury", type: "companion", companion: "borin", description: "The cultist who destroyed Borin's forge still lives.",
+        objectives: [{ id: "find_cultist", text: "Track the cultist", count: 0, target: 1 }, { id: "borin_choice", text: "Help Borin decide", count: 0, target: 1 }],
+        rewards: { xp: 250, companionApproval: 25 } }
+};
